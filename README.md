@@ -42,10 +42,23 @@ Ora che sappiamo dove vengono salvati i dati nello *stack frame*, abbiamo varie 
     
 La prima è troppo da skiddy, quindi si andrà per la **2**🤣.
 ## [cheat.c](https://github.com/ManuzXo/Esercizio-di-Reverse-Engineering/blob/main/src/cheat.c) (x86)
+Ora sappiamo dove nel programma sta la logica base di generazione **key** e quale registri usare.  
+La mia 💡 era di stampare la chiave prima che il programma ti chieda **Insert the Key**, quindi un'esempio di shell code da injectare all'interno della funzione sarebbe:  
+```asm
+   push [esp+60h+Block] ; puntatore dove è la chiave
+   push offset strFormat ; qui sarà la stringa del tipo "%s"
+   call printf
+   add esp,8 ; pulizia stack
+```
+--------------------------
+Domanda spontanea, come e dove lo inserisci nel programma? Abbiamo varie metodologie tra le quali:
+- Windows API  
+   Useremo l'api di Windows per avviare il processo e scrivere in memoria;
+- DLL (libreria)  
+   Potremmero creare una DLL da injectare nel processo ed avremmo a disposizione la stessa regione di memoria del programma
 
-
-
-
+Disolito creare una DLL è una delle scelte più usate, ma stavolta usero un'approccio stile dei classici Debugger.
+---------------------------
 
 
 
