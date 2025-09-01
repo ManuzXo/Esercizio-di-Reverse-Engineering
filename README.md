@@ -9,7 +9,7 @@ Per [disassemblare](https://it.wikipedia.org/wiki/Disassembler) il programma **c
 ### Compilazione
 Per compilare i programmi (compilati per 32 bit), ho usato [GCC](https://gcc.gnu.org/) per ambiente Windows
 ## ⚠ Premessa
-- In questa spiegazione tratterò di temi come lo [stack](https://en.wikipedia.org/wiki/Stack_(abstract_data_type)) e l'[heap](https://it.wikipedia.org/wiki/Allocazione_dinamica_della_memoria), quindi non spiegherò tutto nei mini dettagli, anche perchè dovrei scrivere un papiro 😢.  
+- In questa spiegazione tratterò di temi come lo [stack](https://en.wikipedia.org/wiki/Stack_(abstract_data_type)) e l'[heap](https://it.wikipedia.org/wiki/Allocazione_dinamica_della_memoria), quindi non spiegherò tutto nei minimi dettagli, anche perchè dovrei scrivere un papiro 😢.  
 - Per facilitare anche il disassemblaggio, ho compilato una sola volta l'eseguibile [**crackme.exe**](https://github.com/ManuzXo/Esercizio-di-Reverse-Engineering/blob/main/crackme.exe). Il motivo è per gli [indirizzi di memoria](https://en.wikipedia.org/wiki/Memory_address), se ad ogni test facessimo una nuova compilazione, tutti gli **indirizzi di memoria** verrebbero cambiati nel file eseguibile, quindi per facilitare anche lo sviluppo del [**cheat.c**](#cheatc-x86), gli **indirizzi di memoria** che vedrete saranno collegati direttamente all'eseguibile **crack.exe** già compilato.  
 Se volete provare anche ad implementare una logica dinamica ad ogni compilazione nuova dell'eseguibile vi consiglio questo [link](https://github.com/GH-Rake/PatternScan)
 ## [crackme.c](https://github.com/ManuzXo/Esercizio-di-Reverse-Engineering/blob/main/src/crackme.c) (x86)
@@ -67,6 +67,8 @@ Di base, per implementare il payload, abbiamo bisogno di [librerie di sistema](h
 Ci servono soltanto due indirizzi di memoria del programma: **0x40150C** e **0x401510**
 <img width="1250" height="477" alt="offset_memory" src="https://github.com/user-attachments/assets/3b99ed6c-017b-4755-af1f-4d5122db07e1" />
 ## 🎯 Risultato Finale
+Spero che questa breve guida vi abbia permesso di apprendere nuove nozioni in modo chiaro e semplice!
+Di seguito, ecco il video dimostrativo finale del nostro custom payload:
 ![risulato_finale](https://github.com/user-attachments/assets/c48fa2ca-59ec-4c8d-9ef2-a71de8f45dab)
 
 
