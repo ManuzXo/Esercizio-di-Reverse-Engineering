@@ -43,7 +43,7 @@ Ora che sappiamo dove vengono salvati i dati nello *stack frame*, abbiamo varie 
     
 La prima è troppo da skiddy, quindi si andrà per la **2**🤣.
 ## [cheat.c](https://github.com/ManuzXo/Esercizio-di-Reverse-Engineering/blob/main/src/cheat.c) (x86)
-Ora sappiamo dove nel programma stia la logica base di generazione **key** e quale registri usare.  
+Ora sappiamo in quale punto del programma la **key** viene generata.  
 La mia 💡 era di stampare la chiave prima che il programma ti chieda **Insert the Key**, quindi un'esempio di shell code da injectare all'interno della funzione sarebbe:  
 ```asm
    push [esp+60h+Block] ; puntatore dove è la chiave
