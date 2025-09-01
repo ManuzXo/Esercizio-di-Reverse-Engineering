@@ -42,23 +42,41 @@ Ora che sappiamo dove vengono salvati i dati nello *stack frame*, abbiamo varie 
     
 La prima è troppo da skiddy, quindi si andrà per la **2**🤣.
 ## [cheat.c](https://github.com/ManuzXo/Esercizio-di-Reverse-Engineering/blob/main/src/cheat.c) (x86)
-Ora sappiamo dove nel programma sta la logica base di generazione **key** e quale registri usare.  
+Ora sappiamo dove nel programma stia la logica base di generazione **key** e quale registri usare.  
 La mia 💡 era di stampare la chiave prima che il programma ti chieda **Insert the Key**, quindi un'esempio di shell code da injectare all'interno della funzione sarebbe:  
 ```asm
    push [esp+60h+Block] ; puntatore dove è la chiave
    push offset strFormat ; qui sarà la stringa del tipo "%s"
    call printf
-   add esp,8 ; pulizia stack
 ```
 --------------------------
-Domanda spontanea, come e dove lo inserisci nel programma? Abbiamo varie metodologie tra le quali:
-- Windows API  
-   Useremo l'api di Windows per avviare il processo e scrivere in memoria;
-- DLL (libreria)  
-   Potremmero creare una DLL da injectare nel processo ed avremmo a disposizione la stessa regione di memoria del programma
+### ❓ Come e Dove
+Domanda spontanea, come e dove lo inserisci nel programma?  
+Possiamo benissimo decidere di applicare un [Hook](https://en.wikipedia.org/wiki/Hooking), tramite l'istruzione [jmp](https://en.wikipedia.org/wiki/JMP_(x86_instruction)) al nostro payload, così che il programma eseguirà le nostre istruzioni. 
+<img width="1546" height="477" alt="payload_insert" src="https://github.com/user-attachments/assets/96a50888-1186-4a76-a8d1-ffdafe42bd56" />
+### 🔧 Implementazione
+Per l'implementazione non mi dilungo nello spiegare ogni singola riga di codice, ma darò un'overview di quello che ho usato.  
+Di base, per implementare il payload, abbiamo bisogno di [librerie di sistema](https://it.wikipedia.org/wiki/Libreria_standard_del_C#:~:text=La%20libreria%20standard%20del%20C,della%20libreria%20ad%20esse%20associate.) e degli indirizzi di memoria del programma.  
 
-Disolito creare una DLL è una delle scelte più usate, ma stavolta usero un'approccio stile dei classici Debugger.
----------------------------
+#### 📚 Librerie di Sistema (più rilevanti)
+- [CreateProcessW](https://learn.microsoft.com/it-it/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw) 🡆 Avvia l'eseguibile **crackme.exe** con la modalità [CREATE_SUSPEND](https://learn.microsoft.com/en-us/windows/win32/procthread/process-creation-flags#:~:text=Virtual%20DOS%20Machine.-,CREATE_SUSPENDED,-0x00000004) in modo che il programma sia in uno stato di attesa
+- [VirtualAllocEx](https://learn.microsoft.com/it-it/windows/win32/api/memoryapi/nf-memoryapi-virtualallocex) 🡆 Usata sia per allocare la stringa che stamperà la [key](https://github.com/ManuzXo/Esercizio-di-Reverse-Engineering/blob/main/src/cheat.c#L22) e per [allocare il payload](https://github.com/ManuzXo/Esercizio-di-Reverse-Engineering/blob/main/src/cheat.c#L71)
+- [WriteProcessMemory](https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-writeprocessmemory) 🡆 Usata per fare [l'hook del payload](https://github.com/ManuzXo/Esercizio-di-Reverse-Engineering/blob/main/src/cheat.c#L86) e per scrivere i [bytes/opcode del payload](https://github.com/ManuzXo/Esercizio-di-Reverse-Engineering/blob/main/src/cheat.c#L28)
+
+#### 🧩 Indirizzi di Memoria
+Ci servono soltanto due indirizzi di memoria del programma: **0x40150C** e **0x401510**
+<img width="1250" height="477" alt="offset_memory" src="https://github.com/user-attachments/assets/3b99ed6c-017b-4755-af1f-4d5122db07e1" />
+## 🎯 Risultato Finale
+![risulato_finale](https://github.com/user-attachments/assets/c48fa2ca-59ec-4c8d-9ef2-a71de8f45dab)
+
+
+
+
+
+
+
+
+
 
 
 
